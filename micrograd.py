@@ -417,7 +417,7 @@ x = [2.0, 3.0, -1.0]
 n = MLP(3, [4, 4, 1])  # 2 dimensional neuron since there are two input '2.0', '3.0'
 n(x)
 
-# draw_dot(n(x))
+draw_dot(n(x))
 
 n.parameters()  # These are all the parameters (weights and biases) in the network.
 len(
