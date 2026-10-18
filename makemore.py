@@ -12,18 +12,18 @@ b = {}
 
 for w in words:
     # Creating the Bigram of the beginning and last letter.
-    ch = ["<S>"] + list(w) + ["<E>"]
+    ch = ["<S>"] + list(w) + ["<E>"] # w ---> 'emma'   BUT   list(w) ---> ['e', 'm', 'm', 'a']
 
     # For every word, I get the first character and its next.
-    for ch1, ch2 in zip(ch, ch[1:]):
+    for ch1, ch2 in zip(ch[0:], ch[1:]):
 
         # Checking the number of times that a Bigram appears.
         bigram = (ch1, ch2)
-        b[bigram] = b.get(bigram, 0) + 1
-
+        b[bigram] = b.get(bigram, 0) + 1 # Just counting bigrams and seeing how often they occur.
+        
         # print(ch1, ch2)
 
-# print(b)
+# print(f"{b}\n")
 
 # ---[Sorting the Bigrams]-------------------------------------------------------------------------------------------------------------
 

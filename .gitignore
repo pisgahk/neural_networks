@@ -10,3 +10,9 @@ wheels/
 .venv
 
 api_key.txt
+
+learning_burn/taxi_model.bin
+
+# Added by cargo
+
+/target

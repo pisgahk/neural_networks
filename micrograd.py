@@ -14,7 +14,7 @@ ys = f(xs)
 
 plt.plot(xs, ys)
 plt.show()
-
+print(plt.get_backend())
 
 # ---[Calculating the slope]--------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ c = 10.0
 y = a * b + c
 print(y)
 
-h = 0.000000001
+h = 0.0000000000001
 c += h
 y1 = a * b + c
 
@@ -178,7 +178,9 @@ def trace(root):
 
 
 def draw_dot(root):
-    dot = Digraph(format="svg", graph_attr={"rankdir": "LR", "splines": "false"})  # LR = Left to Right.
+    dot = Digraph(
+        format="svg", graph_attr={"rankdir": "LR", "splines": "false"}
+    )  # LR = Left to Right.
 
     nodes, edges = trace(root)
     for n in nodes:
@@ -231,7 +233,7 @@ d = e + a
 g = Value(-2.0)
 L = g * d
 L = L.data
-L
+# L
 
 
 # ---[Manually Backpropagation]------------------------------------------------------------------------
@@ -458,7 +460,6 @@ ypred
 # ---[More organized way of calculating the `Loss` and `Gradient descent`.]---------------------------------------
 
 for k in range(1000):
-
     # Forward Pass.
     ypred = [n(x) for x in xs]
     loss = sum(((yout - ygt) ** 2 for ygt, yout in zip(ys, ypred)), Value(0.0))

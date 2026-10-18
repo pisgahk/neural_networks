@@ -1,0 +1,25 @@
+[package]
+name = "neural_networks"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+burn = { version = "0.20.1", features = ["autodiff", "ndarray", "wgpu"] }
+chrono = "0.4.41"
+evcxr = "0.21.1"
+ndarray = "0.17.2"
+ndarray-rand = "0.16.0"
+plotly = "0.14.1"
+plotters = { version = "0.3.7", optional = true }
+minifb = { version = "0.27", optional = true }
+polars = { version = "0.53", features = ["lazy", "parquet", "round_series", "is_between"] }
+polars-ops = "0.53"
+rand = { version = "0.10.1", features = ["std"] }
+
+[features]
+plot = ["dep:plotters"]
+plot-window = ["plot", "dep:minifb"]
+
+[[bin]]
+name = "taxis_tutorial"
+path = "learning_burn/taxis_tutorial.rs"
