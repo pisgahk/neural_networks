@@ -17,6 +17,7 @@ def saada_implementation(
         print(
             f"-[{i}]- Weight:{w.item():.2f}, Bias:{b.item():.2f}, Loss:{loss.item():.2f}"
         )
+    print("Numpy Implementation...")
 
 
 def lowest_possible_loss(m: torch.Tensor, f: torch.Tensor):
@@ -64,26 +65,50 @@ def autograd_implementation(
 
         w.grad, b.grad = None, None
 
-        print(f"Weights: {w:.3f}, Biases: {b:.3f} ")
+        print(f"-[{step}]- Weights: {w:.3f}, Biases: {b:.3f} ")
+    print("AutoGrad implementation Hogya...")
 
 
-def pytorch_implementation(m: torch.Tensor, f: torch.Tensor):
+class FareModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.w = nn.Parameter(torch.tensor(1.0))
+        self.b = nn.Parameter(torch.tensor(0.0))
 
-    class FareModel(nn.Module):
-        def __init__(self):
-            super().__init__()
-            self.w = nn.Parameter(torch.Tensor(1.0))
-            self.b = nn.Parameter(torch.Tensor(0.0))
+    def forward(self, m):
+        return self.w * m + self.b
 
-        def forward(self, m):
-            return self.w * m + self.b
+
+def pytorch_implementation(
+    m: torch.Tensor,
+    f: torch.Tensor,
+    lr: float = 0.0001,
+    steps: int = 10000,
+    print_every: int = 500,
+) -> FareModel:
+    """Train and return a linear fare model using PyTorch."""
+    m = torch.as_tensor(m, dtype=torch.float32)
+    f = torch.as_tensor(f, dtype=torch.float32)
+    if m.shape != f.shape:
+        raise ValueError("miles and fares must have the same shape")
 
     model = FareModel()
-    print([name for name, p in model.named_parameters()])
-
-    pred = 1.0 * m + 0
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr)
     loss_fn = nn.MSELoss()
-    print(f"{loss_fn(pred, f):.3f}")  # equals our Mean Squared Error 262.02
+
+    for step in range(steps):
+        loss = loss_fn(model(m), f)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        if print_every and (step % print_every == 0 or step == steps - 1):
+            print(
+                f"-[{step}]- Weight:{model.w.item():.4f}, "
+                f"Bias:{model.b.item():.4f}, Loss:{loss.item():.4f}"
+            )
+
+    return model
 
 
 def save_model():
@@ -117,13 +142,13 @@ def main():
     bias = torch.tensor(0.0, requires_grad=True)
     learning_rate = 0.0001
 
-    saada_implementation(miles, fares, weights, bias, learning_rate)
+    # saada_implementation(miles, fares, weights, bias, learning_rate)
 
     # lowest_possible_loss(miles, fares)
 
     # autograd_implementation(miles, fares, weights, bias, learning_rate)
 
-    # pytorch_implementation(miles, fares)
+    pytorch_implementation(miles, fares)
 
 
 if __name__ == "__main__":
